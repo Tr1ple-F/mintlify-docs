@@ -82,10 +82,6 @@ Compress text input for optimized LLM inference.
   Minimum token count for output.
 </ResponseField>
 
-<ResponseField name="protect_json" type="bool" default="false">
-  Prevents compressing JSON objects.
-</ResponseField>
-
 <ResponseField name="compression_settings" type="CompressionSettings | None">
   Custom settings object (alternative to individual params).
 </ResponseField>
@@ -106,10 +102,6 @@ Dataclass for compression configuration.
 
 <ResponseField name="min_output_tokens" type="int | None">
   Optional minimum output tokens.
-</ResponseField>
-
-<ResponseField name="protect_json" type="bool" default="false">
-  Prevents compressing JSON objects.
 </ResponseField>
 
 ### CompressResponse
@@ -182,8 +174,7 @@ client = TokenClient(api_key="your-api-key")
 settings = CompressionSettings(
     aggressiveness=0.7,
     max_output_tokens=100,
-    min_output_tokens=50,
-    protect_json=False
+    min_output_tokens=50
 )
 
 response = client.compress_input(
