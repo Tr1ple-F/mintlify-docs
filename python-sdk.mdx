@@ -66,7 +66,7 @@ Compress text input for optimized LLM inference.
   The text to compress.
 </ResponseField>
 
-<ResponseField name="model" type="str" default="bear-1.2">
+<ResponseField name="model" type="str" default="bear-1">
   Model to use. `bear-1.2` (recommended), `bear-1.1`, or `bear-1`.
 </ResponseField>
 
@@ -80,10 +80,6 @@ Compress text input for optimized LLM inference.
 
 <ResponseField name="min_output_tokens" type="int | None">
   Minimum token count for output.
-</ResponseField>
-
-<ResponseField name="protect_json" type="bool" default="false">
-  Prevents compressing JSON objects.
 </ResponseField>
 
 <ResponseField name="compression_settings" type="CompressionSettings | None">
@@ -106,10 +102,6 @@ Dataclass for compression configuration.
 
 <ResponseField name="min_output_tokens" type="int | None">
   Optional minimum output tokens.
-</ResponseField>
-
-<ResponseField name="protect_json" type="bool" default="false">
-  Prevents compressing JSON objects.
 </ResponseField>
 
 ### CompressResponse
@@ -182,8 +174,7 @@ client = TokenClient(api_key="your-api-key")
 settings = CompressionSettings(
     aggressiveness=0.7,
     max_output_tokens=100,
-    min_output_tokens=50,
-    protect_json=False
+    min_output_tokens=50
 )
 
 response = client.compress_input(
@@ -240,6 +231,8 @@ from tokenc import (
     TokenClient,
     AuthenticationError,
     InvalidRequestError,
+    PaymentRequiredError,
+    RequestTooLargeError,
     RateLimitError,
     APIError
 )
@@ -252,6 +245,10 @@ except AuthenticationError:
     print("Invalid API key")
 except InvalidRequestError as e:
     print(f"Invalid request: {e}")
+except PaymentRequiredError:
+    print("Insufficient balance")
+except RequestTooLargeError:
+    print("Request too large")
 except RateLimitError:
     print("Rate limit exceeded, please wait")
 except APIError as e:
@@ -262,6 +259,8 @@ except APIError as e:
 |-----------|-------------|
 | `AuthenticationError` | Invalid API key |
 | `InvalidRequestError` | Invalid request parameters |
+| `PaymentRequiredError` | Insufficient balance |
+| `RequestTooLargeError` | Request exceeds size limits |
 | `RateLimitError` | Rate limit exceeded |
 | `APIError` | Other API errors |
 
